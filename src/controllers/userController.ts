@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService.js";
 
+
 // GET all users
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -23,7 +24,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params as { id: string };
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserById({id});
     
     if (!user) {
       res.status(404).json({ 
@@ -56,7 +57,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
       return;
     }
     
-    const newUser = await userService.createUser(email, name);
+    const newUser = await userService.createUser({email, name});
     res.status(201).json({ 
       success: true, 
       data: newUser,
@@ -76,7 +77,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     const { id } = req.params as { id: string };
     const { email, name } = req.body;
     
-    const updatedUser = await userService.updateUser(id, { email, name });
+    const updatedUser = await userService.updateUser({id, data: { email, name }});
     res.json({ 
       success: true, 
       data: updatedUser,
@@ -107,3 +108,4 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
     });
   }
 };
+
